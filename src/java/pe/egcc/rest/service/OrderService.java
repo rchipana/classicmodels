@@ -28,10 +28,11 @@ public class OrderService implements Serializable {
 
         List<Order> lista = new ArrayList<Order>();
         String sql = "SELECT ord.`orderNumber` , ord.`orderDate` , ord.`shippedDate` , prol.`productLine` , \n"
-                + "pro.`productName` , de.`quantityOrdered` , de.`priceEach` , cus.`customerName` , ord.status \n"
+                + "pro.`productName` , de.`quantityOrdered` , de.`priceEach` , cus.`customerName` , ord.status  , pay.amount , de.priceEach \n"
                 + "from orders ord join orderdetails de on ord.`orderNumber` = de.`orderNumber`\n"
                 + "join products pro on pro.`productCode` = de.`productCode`\n"
                 + "join customers cus on cus.`customerNumber` = ord.`customerNumber`\n"
+                + "join payments pay on pay.customerNumber = cus.customerNumber \n"
                 + "join productlines prol on prol.`productLine` = pro.`productLine` where (ord.orderNumber like '%" + filtro + "%' or cus.customerName like '%" + filtro + "%') ";
         try {
             connection = AccesoDB.getConnection();
@@ -49,6 +50,8 @@ public class OrderService implements Serializable {
                 ord.setEstado(resultSet.getString(9));
                 ord.setFecha(resultSet.getDate(2));
                 ord.setFechaEnvio(resultSet.getDate(3));
+                ord.setTotal(resultSet.getDouble(10));
+                ord.setPrecio_unidad(resultSet.getDouble(11));
                 lista.add(ord);
             }
 

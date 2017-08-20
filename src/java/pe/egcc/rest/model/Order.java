@@ -24,6 +24,8 @@ public class Order implements Serializable {
     private Date fechaEnvio;
     private String estado;
     private String cliente;
+    private Double total;
+    private Double precio_unidad;
 
     public Order(Integer numeroOrden, String producto, Integer cantidad, Date fecha, Date fechaEnvio, String estado, String cliente) {
         this.numeroOrden = numeroOrden;
@@ -36,6 +38,25 @@ public class Order implements Serializable {
     }
 
     public Order() {
+    }
+
+    public Double getPrecio_unidad() {
+        return precio_unidad;
+    }
+
+    public void setPrecio_unidad(Double precio_unidad) {
+        this.precio_unidad = precio_unidad;
+    }
+
+    
+    
+    @XmlElement
+    public Double getTotal() {
+        return total;
+    }
+
+    public void setTotal(Double total) {
+        this.total = total;
     }
 
     @XmlElement
