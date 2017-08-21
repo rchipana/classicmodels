@@ -63,4 +63,43 @@ public class EmployesService {
 
     }
 
+    public void crearEmployees(String priNombre,
+            String segNom, String exten, String email,
+            String offiCode, Integer jefe, String puesto) {
+
+        Connection cn = null;
+        try {
+            cn = AccesoDB.getConnection();
+            cn.setAutoCommit(false);
+
+            String sql = "NSERT INTO employees (`lastName` , `firstName` , extension , email , `officeCode` , `reportsTo` , `jobTitle`)\n"
+                    + "VALUES (?,?,?,?,?,?,?)";
+            PreparedStatement pstm = cn.prepareStatement(sql);
+            pstm.setString(1, segNom);
+            pstm.setString(2, priNombre);
+            pstm.setString(3, exten);
+            pstm.setString(4, email);
+            pstm.setString(5, offiCode);
+            pstm.setInt(6, jefe);
+            pstm.setString(7, puesto);
+            pstm.executeUpdate();
+            pstm.close();
+            cn.commit();
+        } catch (Exception e) {
+            try {
+                cn.rollback();
+            } catch (Exception e1) {
+            }
+
+            String texto = "Error en el proceso." + e.getMessage();
+            throw new RuntimeException(texto);
+        } finally {
+            try {
+                cn.close();
+            } catch (Exception e) {
+            }
+        }
+
+    }
+
 }

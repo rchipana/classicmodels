@@ -1,6 +1,6 @@
 package pe.egcc.rest.server;
 
-import com.sun.javafx.scene.control.skin.VirtualFlow;
+//import com.sun.javafx.scene.control.skin.VirtualFlow;
 import java.util.List;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
@@ -126,6 +126,34 @@ public class ClassicModels {
 
         // Reporte
         return mensaje;
+    }
+
+    @POST
+    @Path(value = "/creaCustomer")
+    @Produces({MediaType.APPLICATION_JSON})
+    public Mensaje crearCustomer(
+            @FormParam("nombre") String nombre,
+            @FormParam("segNombre") String segNombre,
+            @FormParam("priNombre") String priNombre,
+            @FormParam("fono") String fono,
+            @FormParam("direccion") String direccion,
+            @FormParam("ciudad") String ciudad,
+            @FormParam("pais") String pais
+    ) {
+        
+        Mensaje me = new Mensaje();
+        try {
+            CustomerService cus = new CustomerService();
+            cus.crearCustomer(nombre, segNombre, priNombre, fono, direccion, ciudad, pais);
+            
+            me.setCode(1);
+            me.setTexto("Proceso ok.");
+        } catch (Exception e) {
+            me.setCode(-1);
+            me.setTexto(e.getMessage());
+        }
+        
+        return me;
     }
 
 }
